@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище DatabaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Materials">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NakladnayaNumberID" Type="int" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Count" Type="int" />
+          <Property Name="Price" Type="int" />
+          <Property Name="Sum" Type="int" />
+        </EntityType>
+        <EntityType Name="UsedMaterial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkerId" Type="int" />
+          <Property Name="MaterialId" Type="int" />
+          <Property Name="Count" Type="int" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Workers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="200" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="200" />
+          <Property Name="Workplace" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__UsedMater__Mater__2B3F6F97">
+          <End Role="Materials" Type="Self.Materials" Multiplicity="0..1" />
+          <End Role="UsedMaterial" Type="Self.UsedMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materials">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsedMaterial">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsedMater__Worke__2A4B4B5E">
+          <End Role="Workers" Type="Self.Workers" Multiplicity="0..1" />
+          <End Role="UsedMaterial" Type="Self.UsedMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsedMaterial">
+              <PropertyRef Name="WorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище DatabaseModelContainer">
+          <EntitySet Name="Materials" EntityType="Self.Materials" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsedMaterial" EntityType="Self.UsedMaterial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Workers" EntityType="Self.Workers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__UsedMater__Mater__2B3F6F97" Association="Self.FK__UsedMater__Mater__2B3F6F97">
+            <End Role="Materials" EntitySet="Materials" />
+            <End Role="UsedMaterial" EntitySet="UsedMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsedMater__Worke__2A4B4B5E" Association="Self.FK__UsedMater__Worke__2A4B4B5E">
+            <End Role="Workers" EntitySet="Workers" />
+            <End Role="UsedMaterial" EntitySet="UsedMaterial" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NakladnayaNumberID" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Count" Type="Int32" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="Sum" Type="Int32" />
+          <NavigationProperty Name="UsedMaterials" Relationship="Self.FK__UsedMater__Mater__2B3F6F97" FromRole="Materials" ToRole="UsedMaterial" />
+        </EntityType>
+        <EntityType Name="UsedMaterial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkerId" Type="Int32" />
+          <Property Name="MaterialId" Type="Int32" />
+          <Property Name="Count" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Material" Relationship="Self.FK__UsedMater__Mater__2B3F6F97" FromRole="UsedMaterial" ToRole="Materials" />
+          <NavigationProperty Name="Worker" Relationship="Self.FK__UsedMater__Worke__2A4B4B5E" FromRole="UsedMaterial" ToRole="Workers" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Patronymic" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Workplace" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UsedMaterials" Relationship="Self.FK__UsedMater__Worke__2A4B4B5E" FromRole="Workers" ToRole="UsedMaterial" />
+        </EntityType>
+        <Association Name="FK__UsedMater__Mater__2B3F6F97">
+          <End Role="Materials" Type="Self.Material" Multiplicity="0..1" />
+          <End Role="UsedMaterial" Type="Self.UsedMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materials">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsedMaterial">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsedMater__Worke__2A4B4B5E">
+          <End Role="Workers" Type="Self.Worker" Multiplicity="0..1" />
+          <End Role="UsedMaterial" Type="Self.UsedMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsedMaterial">
+              <PropertyRef Name="WorkerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Materials" EntityType="Self.Material" />
+          <EntitySet Name="UsedMaterials" EntityType="Self.UsedMaterial" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Workers" EntityType="Self.Worker" />
+          <AssociationSet Name="FK__UsedMater__Mater__2B3F6F97" Association="Self.FK__UsedMater__Mater__2B3F6F97">
+            <End Role="Materials" EntitySet="Materials" />
+            <End Role="UsedMaterial" EntitySet="UsedMaterials" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsedMater__Worke__2A4B4B5E" Association="Self.FK__UsedMater__Worke__2A4B4B5E">
+            <End Role="Workers" EntitySet="Workers" />
+            <End Role="UsedMaterial" EntitySet="UsedMaterials" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DatabaseModelContainer" CdmEntityContainer="Database">
+          <EntitySetMapping Name="Materials">
+            <EntityTypeMapping TypeName="DatabaseModel.Material">
+              <MappingFragment StoreEntitySet="Materials">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NakladnayaNumberID" ColumnName="NakladnayaNumberID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsedMaterials">
+            <EntityTypeMapping TypeName="DatabaseModel.UsedMaterial">
+              <MappingFragment StoreEntitySet="UsedMaterial">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Workers">
+            <EntityTypeMapping TypeName="DatabaseModel.Worker">
+              <MappingFragment StoreEntitySet="Workers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Workplace" ColumnName="Workplace" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
